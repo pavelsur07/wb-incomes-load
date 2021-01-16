@@ -1,0 +1,22 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+
+        types:
+            wb_stat_supplier_id: 'App\Model\Stat\Entity\Supplier\IdType'
+            wb_stat_incomes_transaction_key: 'App\Model\Stat\Entity\Incomes\TransactionKeyType'
+
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        #server_version: '13'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            Supplier:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Model/Stat/Entity'
+                prefix: 'App\Model\Stat\Entity'
+                alias: Stat

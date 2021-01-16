@@ -1,0 +1,90 @@
+version: "3.7"
+services:
+  gateway:
+    build:
+      context: gateway/docker
+      dockerfile: development/nginx/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8082:8082"
+  seller:
+    build:
+      context: seller/docker
+      dockerfile: development/nginx/Dockerfile
+    volumes:
+      - ./seller:/app
+
+  seller-php-fpm:
+    build:
+      context: seller/docker
+      dockerfile: development/php-fpm/Dockerfile
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: 1
+      PHP_IDE_CONFIG: serverName=seller-fpm
+      DB_HOST: seller-postgres
+      DB_USER: app
+      DB_PASSWORD: secret
+      DB_NAME: app
+      MAILER_HOST: mailer
+      MAILER_PORT: 1025
+      MAILER_USER: app
+      MAILER_PASSWORD: secret
+      MAILER_ENCRYPTION: tcp
+      MAILER_FROM_EMAIL: mail@app.test
+      FRONTEND_URL: http://localhost:8080
+      SENTRY_DSN: ""
+    volumes:
+      - ./seller:/app
+
+  seller-php-cli:
+    build:
+      context: seller/docker
+      dockerfile: development/php-cli/Dockerfile
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: 1
+      DB_HOST: seller-postgres
+      DB_USER: app
+      DB_PASSWORD: secret
+      DB_NAME: app
+      MAILER_HOST: mailer
+      MAILER_PORT: 1025
+      MAILER_USER: app
+      MAILER_PASSWORD: secret
+      MAILER_ENCRYPTION: tcp
+      MAILER_FROM_EMAIL: mail@app.test
+      FRONTEND_URL: http://localhost:8080
+      SENTRY_DSN: ""
+    volumes:
+      - ./seller:/app
+
+  seller-node-watch:
+    image: node:14.15-alpine
+    volumes:
+      - ./seller:/app
+    working_dir: /app
+    command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && npm run watch"
+
+  seller-node:
+    image: node:14.15-alpine
+    volumes:
+      - ./seller:/app
+    working_dir: /app
+
+  seller-postgres:
+    image: postgres:12.2-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: app
+    volumes:
+      - seller-postgres:/var/lib/postgresql/data
+    ports:
+      - "54321:5432"
+
+  mailer:
+    image: mailhog/mailhog
+
+volumes:
+  seller-postgres:
