@@ -6,6 +6,10 @@
 /.env.*.local
 /public/bundles/
 /var/
+/var/cache/*
+/var/log/*
+/var/test/*
+
 /vendor/
 ###< symfony/framework-bundle ###
 
