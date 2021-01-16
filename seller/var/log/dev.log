@@ -1274,3 +1274,5 @@
 [2021-01-16T12:10:49.595651+00:00] doctrine.DEBUG: SELECT obj_description('doctrine_migration_versions'::regclass) AS table_comment; [] []
 [2021-01-16T12:10:49.597609+00:00] doctrine.DEBUG: INSERT INTO doctrine_migration_versions (version, executed_at, execution_time) VALUES (?, ?, ?) ["DoctrineMigrations\\Version [...]","2021-01-16T12:10:49+00:00",168] []
 [2021-01-16T12:10:49.601540+00:00] doctrine.DEBUG: "COMMIT" [] []
+[2021-01-16T12:48:38.401867+00:00] php.DEBUG: Warning: include(/app/var/cache/de_/App_KernelDevDebugContainer.php): failed to open stream: No such file or directory {"exception":{"Symfony\\Component\\ErrorHandler\\Exception\\SilencedErrorContext":{"severity":2,"file":"/app/vendor/symfony/http-kernel/Kernel.php","line":469,"trace":[{"file":"/app/vendor/symfony/http-kernel/Kernel.php","line":469,"function":"include"}],"count":1}}} []
+[2021-01-16T12:48:38.405267+00:00] php.DEBUG: Warning: include(): Failed opening '/app/var/cache/de_/App_KernelDevDebugContainer.php' for inclusion (include_path='.:/usr/local/lib/php') [] []
